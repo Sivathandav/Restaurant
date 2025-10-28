@@ -1,0 +1,47 @@
+/* The outer phone shell UI, to enforce mobile container (430 x 932) */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #000;
+}
+body {
+  font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #222;
+  overflow: hidden;
+}
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.App {
+  width: 430px;
+  height: 932px;
+  max-width: 100vw;
+  max-height: 100vh;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0 8px 40px 0 rgba(0,0,0,0.35);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.App::before { 
+  /* Notch visual */
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 150px;
+  height: 30px;
+  transform: translateX(-50%);
+  background: #000;
+  border-radius: 0 0 30px 30px;
+  z-index: 10;
+}

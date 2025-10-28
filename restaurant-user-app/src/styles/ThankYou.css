@@ -1,0 +1,82 @@
+.thank-you-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  padding: 20px;
+}
+
+.thank-you-content {
+  text-align: center;
+  color: white;
+  animation: fadeIn 0.5s ease;
+}
+
+.success-circle {
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 32px auto;
+  animation: scaleIn 0.5s ease;
+}
+
+.success-icon {
+  color: white;
+  animation: checkmark 0.6s ease 0.3s both;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.thank-you-content h1 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.thank-you-content p {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin-bottom: 24px;
+}
+
+.countdown {
+  margin-top: 24px;
+}
+
+.countdown p {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+@keyframes checkmark {
+  0% {
+    transform: scale(0) rotate(45deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(45deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
