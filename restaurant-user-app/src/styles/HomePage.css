@@ -484,8 +484,7 @@ Image loading improvements */
 /* Prevent content jumping */
 .menu-item-card-user {
   min-height: 280px;
-}/
-* Enhanced Infinite Scroll Styles */
+}/* Enhanced Infinite Scroll Styles */
 .items-counter {
   grid-column: 1 / -1;
   text-align: center;
