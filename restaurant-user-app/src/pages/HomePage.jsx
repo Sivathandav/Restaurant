@@ -9,7 +9,7 @@ import '../styles/HomePage.css';
 
 const HomePage = () => {
   const categories = [
-    'All', 'Burger', 'Pizza', 'Pasta', 'Salads', 'Sandwich', 'Desserts'
+    'All', 'Appetizer', 'Beverages', 'Burger', 'Desserts', 'Pasta', 'Pizza', 'Salads', 'Sandwich'
   ];
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');

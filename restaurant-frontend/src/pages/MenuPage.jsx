@@ -11,7 +11,7 @@ const MenuPage = () => {
   const [category, setCategory] = useState('all');
   const [page, setPage] = useState(1);
 
-  const categories = ['all', 'Burger', 'Pizza', 'Pasta', 'Salads', 'Sandwich', 'Desserts'];
+  const categories = ['all', 'Appetizer', 'Beverages', 'Burger', 'Desserts', 'Pasta', 'Pizza', 'Salads', 'Sandwich'];
 
   const fetchMenuItems = useCallback(async () => {
     try {

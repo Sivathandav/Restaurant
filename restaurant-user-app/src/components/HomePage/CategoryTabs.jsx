@@ -6,15 +6,11 @@ const CategoryTabs = ({ categories, selectedCategory, onSelectCategory }) => {
       'All': '🍽️',
       'Burger': '🍔',
       'Pizza': '🍕',
-      'Beverages': '🥤',
-      'French fries': '🍟',
-      'Veggies': '🥗',
       'Pasta': '🍝',
-      'Desserts': '🍰',
-      'Seafood': '🦐',
       'Salads': '🥙',
-      'Soups': '🍲',
       'Sandwich': '🥪',
+      'Desserts': '🍰',
+      'Beverages': '🥤',
       'Appetizer': '🍤'
     };
     return icons[category] || '🍽️';
