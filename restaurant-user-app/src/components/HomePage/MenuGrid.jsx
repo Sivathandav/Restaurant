@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import MenuItemCard from './MenuItemCard';
 import { getAllMenuItems } from '../../services/api';
 
@@ -7,7 +7,6 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [totalItems, setTotalItems] = useState(0);
 
   const fetchItems = useCallback(async (pageNum, isNewCategory = false) => {
     setLoading(true);
@@ -17,8 +16,6 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
       const newItems = response.data.data;
       const total = response.data.total || 0;
       
-      setTotalItems(total);
-      
       if (pageNum === 1 || isNewCategory) {
         setItems(newItems);
       } else {
@@ -26,24 +23,43 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
       }
       
       // Check if we have more items to load
-      setHasMore(newItems.length === 20 && items.length + newItems.length < total);
+      setHasMore(newItems.length === 20 && (pageNum * 20) < total);
     } catch (error) {
       console.error('Error fetching menu items:', error);
       setHasMore(false);
     } finally {
       setLoading(false);
     }
-  }, [selectedCategory, searchTerm, items.length]);
+  }, [selectedCategory, searchTerm]);
 
   useEffect(() => {
     setItems([]);
     setPage(1);
     setHasMore(true);
-    setTotalItems(0);
-    fetchItems(1, true);
     
     // Scroll to top when category changes
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Fetch initial items
+    const fetchInitialItems = async () => {
+      setLoading(true);
+      try {
+        const category = selectedCategory === 'All' ? '' : selectedCategory;
+        const response = await getAllMenuItems(1, 20, category, searchTerm);
+        const newItems = response.data.data;
+        const total = response.data.total || 0;
+        
+        setItems(newItems);
+        setHasMore(newItems.length === 20 && 20 < total);
+      } catch (error) {
+        console.error('Error fetching menu items:', error);
+        setHasMore(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchInitialItems();
   }, [selectedCategory, searchTerm]);
 
   useEffect(() => {
@@ -55,7 +71,7 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
   // Filter in-stock items only
   const inStockItems = items.filter(item => item.inStock);
 
-  // Native infinite scroll implementation
+  // Infinite scroll implementation
   const lastItemRef = useRef();
   const observerRef = useRef();
   
@@ -128,14 +144,6 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
 
   return (
     <div className="menu-grid-user">
-      {/* Items counter */}
-      {totalItems > 0 && (
-        <div className="items-counter">
-          Showing {inStockItems.length} of {totalItems} items
-          {selectedCategory !== 'All' && ` in ${selectedCategory}`}
-        </div>
-      )}
-      
       {/* Menu items grid */}
       {inStockItems.map((item, index) => (
         <div
@@ -147,7 +155,7 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
         </div>
       ))}
       
-      {/* Loading indicator */}
+      {/* Loading indicator for more items */}
       {loading && items.length > 0 && (
         <div className="loading-more">
           <div className="loading-dots">
@@ -161,8 +169,8 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
       
       {/* End message */}
       {!loading && !hasMore && inStockItems.length > 0 && (
-        <div className="end-message">
-          🎉 You've seen all {inStockItems.length} items in {selectedCategory}!
+        <div className="simple-end-message">
+          You've seen all the items
         </div>
       )}
       

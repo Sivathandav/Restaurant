@@ -40,8 +40,6 @@ const OrdersPage = () => {
       <Header onSearch={setSearchTerm} title="Orders" />
       
       <main className="orders-content">
-        <div className="page-header"><h1>Order Line</h1></div>
-
         <div className="orders-grid">
           {filteredOrders.length > 0 ? (
             filteredOrders.map((order) => (

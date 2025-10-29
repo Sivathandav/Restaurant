@@ -5,7 +5,7 @@ const UserDetailsModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    numberOfMembers: 1,
+    numberOfMembers: 2,
     address: ''
   });
 
@@ -77,7 +77,7 @@ const UserDetailsModal = ({ isOpen, onClose, onSubmit, initialData }) => {
               value={formData.numberOfMembers}
               onChange={handleChange}
             >
-              {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
+              {[2, 4, 6, 8].map(num => (
                 <option key={num} value={num}>{num}</option>
               ))}
             </select>

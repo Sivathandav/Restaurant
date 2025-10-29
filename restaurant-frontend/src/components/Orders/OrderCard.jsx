@@ -8,12 +8,16 @@ const OrderCard = ({ order, onStatusChange, isBlurred = false }) => {
   useEffect(() => {
     if (order.status === 'processing' && order.startTime) {
       // Calculate remaining time only once when component mounts or order changes
+      // This will NOT update in real-time - only when page is refreshed
       const elapsed = Date.now() - new Date(order.startTime).getTime();
       const totalTime = order.processingTime * 60 * 1000;
       const remaining = totalTime - elapsed;
       setRemainingTime(remaining > 0 ? Math.ceil(remaining / 60000) : 0);
+    } else {
+      setRemainingTime(0);
     }
-  }, [order.startTime, order.processingTime, order.status]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [order._id]); // Only depend on order ID to prevent real-time updates
 
 
 

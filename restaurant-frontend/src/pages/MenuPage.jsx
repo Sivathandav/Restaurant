@@ -9,20 +9,20 @@ const MenuPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
-  const [page, setPage] = useState(1);
 
   const categories = ['all', 'Appetizer', 'Beverages', 'Burger', 'Desserts', 'Pasta', 'Pizza', 'Salads', 'Sandwich'];
 
   const fetchMenuItems = useCallback(async () => {
     try {
-      const response = await getAllMenuItems(page, 20, category === 'all' ? '' : category, '');
+      // Fetch all items by setting a high limit
+      const response = await getAllMenuItems(1, 1000, category === 'all' ? '' : category, '');
       setMenuItems(response.data.data);
     } catch (error) {
       console.error('Error fetching menu items:', error);
     } finally {
       setLoading(false);
     }
-  }, [category, page]);
+  }, [category]);
 
   useEffect(() => {
     fetchMenuItems();
@@ -50,10 +50,6 @@ const MenuPage = () => {
       <Header onSearch={setSearchTerm} title="Menu" />
       
       <main className="menu-content">
-        <div className="page-header">
-          <h1>Menu Management</h1>
-        </div>
-
         <div className="category-tabs">
           {categories.map((cat) => (
             <button
