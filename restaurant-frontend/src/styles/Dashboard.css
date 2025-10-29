@@ -51,7 +51,7 @@
 
 /* Dashboard Content */
 .dashboard-content {
-  padding: 24px;
+  padding: 20px;
   max-width: calc(100vw - 120px);
   margin: 0 auto;
   overflow-x: hidden;
@@ -129,10 +129,10 @@
 .analytics-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 24px;
+  gap: 16px;
   align-items: stretch;
-  margin-bottom: 24px;
-  min-height: 450px;
+  margin-bottom: 20px;
+  min-height: 350px;
   width: 100%;
   max-width: 100%;
   overflow: hidden;
@@ -141,9 +141,10 @@
 .revenue-chart-container,
 .order-summary-container {
   background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
   display: flex; 
   flex-direction: column; 
   min-width: 0;
@@ -160,33 +161,42 @@
 
 .chart-header h3,
 .summary-header h3 {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: #333;
+  font-weight: 600;
+  margin: 0;
 }
 
 .filter-buttons {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .filter-buttons button {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border: 1px solid #e5e7eb;
   background: white;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   transition: all 0.3s ease;
+  color: #6b7280;
 }
 
 .filter-buttons button:hover {
-  background-color: #f5f5f5;
+  background-color: #f9fafb;
+  border-color: #d1d5db;
 }
 
-.filter-buttons button.active { background-color: #e9ecef; color: #333; border-color: #ddd; }
+.filter-buttons button.active { 
+  background-color: #f3f4f6; 
+  color: #374151; 
+  border-color: #d1d5db; 
+}
 
 .chart-wrapper {
-  height: 300px;
+  height: 200px;
   position: relative;
   flex: 1;
   display: flex;
@@ -199,42 +209,49 @@
   display: flex;
   justify-content: space-around;
   margin-bottom: 20px;
-  padding: 16px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
 }
 
 .stat-item {
   text-align: center;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  min-width: 60px;
 }
 
 .stat-label {
   display: block;
-  font-size: 0.875rem;
-  color: #666;
-  margin-bottom: 4px;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 6px;
+  font-weight: 500;
 }
 
 .stat-value {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  color: #333;
+  color: #111827;
+  line-height: 1;
 }
 
 .stat-percent {
   display: block;
-  font-size: 0.875rem;
-  color: #888;
+  font-size: 0.75rem;
+  color: #9ca3af;
   margin-top: 4px;
 }
 
 /* Tables Section */
 .tables-section {
   background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
   margin-bottom: 0;
   display: flex;
   flex-direction: column;
@@ -242,61 +259,102 @@
 }
 
 .tables-section h3 {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: #333;
-  margin-bottom: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
 }
 
-.tables-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px; }
-.tables-legend { display:flex; gap:12px; align-items:center; }
-.legend-item { display:flex; align-items:center; gap:8px; color:#6b7280; font-size:0.875rem; }
-.legend-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
-.legend-dot.reserved { background:#e9ecef; border:1px solid #cbd5e1; }
-.legend-dot.available { background:#22c55e; }
+.tables-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-bottom: 16px; 
+}
+
+.tables-legend { 
+  display: flex; 
+  gap: 16px; 
+  align-items: center; 
+}
+
+.legend-item { 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  color: #6b7280; 
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.legend-dot { 
+  width: 8px; 
+  height: 8px; 
+  border-radius: 50%; 
+  display: inline-block; 
+}
+
+.legend-dot.reserved { 
+  background: #f3f4f6; 
+  border: 1px solid #d1d5db; 
+}
+
+.legend-dot.available { 
+  background: #10b981; 
+}
 
 .tables-grid { 
   display: grid; 
   grid-template-columns: repeat(7, 1fr); 
-  gap: 10px; 
+  gap: 8px; 
   flex: 1;
   align-content: start;
 }
 
 .table-card-mini {
-  padding: 16px;
+  padding: 12px 8px;
   border-radius: 8px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
+  border: 1px solid transparent;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .table-card-mini:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .table-card-mini.available {
-  background-color: #22c55e;
+  background-color: #10b981;
   color: white;
+  border-color: #059669;
 }
 
 .table-card-mini.reserved {
-  background-color: #e9ecef;
-  color: #111827;
+  background-color: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
 }
 
 .table-number {
-  font-weight: 600;
-  font-size: 0.875rem;
-  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  line-height: 1;
 }
 
 .table-chairs {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  font-size: 0.75rem;
-  opacity: 0.8;
+  gap: 3px;
+  font-size: 0.7rem;
+  opacity: 0.9;
+  line-height: 1;
 }
 
 /* Chef Stats */

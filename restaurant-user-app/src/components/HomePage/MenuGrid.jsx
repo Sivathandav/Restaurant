@@ -42,7 +42,6 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
 
   useEffect(() => {
     if (page > 1 && !loading && hasMore) {
-      console.log('Fetching page:', page);
       fetchItems(page);
     }
   }, [page, fetchItems, loading, hasMore]);
@@ -65,7 +64,6 @@ const MenuGrid = ({ selectedCategory, searchTerm }) => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !loading && hasMore) {
-          console.log('Loading more items, current page:', page);
           setPage((prev) => prev + 1);
         }
       },

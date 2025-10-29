@@ -154,14 +154,25 @@ exports.getRevenueData = async (req, res) => {
   }
 };
 
-// Get chef statistics
+// Get chef statistics - current workload for dashboard
 exports.getChefStats = async (req, res) => {
   try {
     const chefs = await Chef.find().select('name currentOrderCount ordersCompleted');
 
+    // Format data for dashboard - prioritize current active orders
+    const chefStats = chefs.map(chef => ({
+      _id: chef._id,
+      name: chef.name,
+      currentOrders: chef.currentOrderCount,  // Current active orders (for workload chart)
+      completedOrders: chef.ordersCompleted,  // Historical completed orders
+      // For backward compatibility, also include the old field name
+      currentOrderCount: chef.currentOrderCount,
+      ordersCompleted: chef.ordersCompleted
+    }));
+
     res.json({
       success: true,
-      data: chefs,
+      data: chefStats,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

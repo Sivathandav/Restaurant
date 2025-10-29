@@ -9,7 +9,6 @@ import { Plus } from 'lucide-react';
 import '../styles/Tables.css';
 
 const TablesPage = () => {
-  console.log('TablesPage rendered');
   const [tables, setTables] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -18,6 +17,18 @@ const TablesPage = () => {
   useEffect(() => {
     fetchTables();
   }, []);
+
+  // Keyboard shortcut for creating tables
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === '+' && tables.length < 30) {
+        setIsModalOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [tables.length]);
 
   const fetchTables = async () => {
     try {
@@ -80,21 +91,11 @@ const TablesPage = () => {
       <Header onSearch={setSearchTerm} title="Tables" />
       
       <main className="tables-content">
-        <div className="page-header">
-          <h1>Tables Management</h1>
-          <div className="header-info">
-            <span className="table-count">{tables.length}/30 Tables</span>
-            <button 
-              className="btn-primary" 
-              onClick={() => setIsModalOpen(true)}
-              disabled={tables.length >= 30}
-            >
-              <Plus size={20} />
-              Create Table
-            </button>
-          </div>
+        {/* Table Counter */}
+        <div className="table-counter">
+          {tables.length}/30 Tables
         </div>
-
+        
         <DndProvider backend={HTML5Backend}>
           <div className="tables-grid-6x5">
             {filteredTables.map((table, index) => (
@@ -111,18 +112,22 @@ const TablesPage = () => {
             {searchTerm === '' && Array.from({ length: Math.max(0, 30 - tables.length) }, (_, index) => (
               <div 
                 key={`empty-${index}`} 
-                className={`empty-table-slot ${index === 0 && tables.length < 30 ? 'next-table' : ''}`}
+                className={`empty-table-slot ${index === 0 && tables.length < 30 ? 'clickable' : ''}`}
                 onClick={() => index === 0 && tables.length < 30 && setIsModalOpen(true)}
               >
                 <span className="slot-number">#{tables.length + index + 1}</span>
                 {index === 0 && tables.length < 30 && (
-                  <span className="add-hint">Click to add</span>
+                  <div className="add-icon">
+                    <Plus size={24} />
+                  </div>
                 )}
               </div>
             ))}
           </div>
         </DndProvider>
       </main>
+
+
 
       <CreateTableModal
         isOpen={isModalOpen}

@@ -42,9 +42,9 @@ const TablesGrid = () => {
             key={table._id}
             className={`table-card-mini ${table.status === 'reserved' ? 'reserved' : 'available'}`}
           >
-            <div className="table-number">Table {table.tableNumber}</div>
+            <div className="table-number">{table.tableNumber.toString().padStart(2, '0')}</div>
             <div className="table-chairs">
-              <Users size={16} />
+              <Users size={12} />
               <span>{table.chairCount}</span>
             </div>
           </div>

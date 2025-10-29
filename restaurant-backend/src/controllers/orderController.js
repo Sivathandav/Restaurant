@@ -90,15 +90,24 @@ exports.createOrder = async (req, res) => {
     // Generate unique order ID
     const orderId = await Order.generateOrderId();
 
-    // Assign chef with fewest orders
+    // Assign chef with fewest orders (load balancing)
     const chefs = await Chef.find({ isActive: true }).sort('currentOrderCount');
     if (chefs.length === 0) {
       return res.status(400).json({ success: false, message: 'No chefs available' });
     }
 
+    // Find the minimum order count
     const minOrders = chefs[0].currentOrderCount;
+    
+    // Get all chefs with minimum order count
     const eligibleChefs = chefs.filter(c => c.currentOrderCount === minOrders);
+    
+    // If only one chef has minimum orders, assign to them
+    // If multiple chefs have same minimum orders, assign randomly among them
     const assignedChef = eligibleChefs[Math.floor(Math.random() * eligibleChefs.length)];
+    
+    console.log(`🧑‍🍳 Chef Assignment: ${assignedChef.name} selected (${assignedChef.currentOrderCount} current orders)`);
+    console.log(`📊 Available chefs with min orders (${minOrders}): ${eligibleChefs.map(c => c.name).join(', ')}`);
 
     // Calculate total preparation time
     let totalPrepTime = 0;

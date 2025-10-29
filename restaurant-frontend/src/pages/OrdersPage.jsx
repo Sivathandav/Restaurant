@@ -5,7 +5,6 @@ import { getActiveOrders } from '../services/api';
 import '../styles/Orders.css';
 
 const OrdersPage = () => {
-  console.log('OrdersPage rendered');
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');

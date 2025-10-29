@@ -35,7 +35,7 @@ const TableCard = ({ table, onDelete, index, moveTable, isBlurred = false }) => 
             onClick={() => onDelete(table._id)}
             title="Delete Table"
           >
-            <Trash2 size={12} />
+            <Trash2 size={16} />
           </button>
         )}
       </div>
@@ -45,7 +45,7 @@ const TableCard = ({ table, onDelete, index, moveTable, isBlurred = false }) => 
       )}
       
       <div className="table-info">
-        <Users size={12} />
+        <Users size={16} />
         <span>{table.chairCount}</span>
       </div>
       

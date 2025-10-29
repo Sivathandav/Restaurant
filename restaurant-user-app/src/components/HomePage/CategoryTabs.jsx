@@ -3,16 +3,19 @@ import React from 'react';
 const CategoryTabs = ({ categories, selectedCategory, onSelectCategory }) => {
   const getCategoryIcon = (category) => {
     const icons = {
+      'All': '🍽️',
       'Burger': '🍔',
       'Pizza': '🍕',
-      'Drink': '🥤',
-      'Fries': '🍟',
+      'Beverages': '🥤',
+      'French fries': '🍟',
       'Veggies': '🥗',
       'Pasta': '🍝',
       'Desserts': '🍰',
       'Seafood': '🦐',
       'Salads': '🥙',
-      'Soups': '🍲'
+      'Soups': '🍲',
+      'Sandwich': '🥪',
+      'Appetizer': '🍤'
     };
     return icons[category] || '🍽️';
   };

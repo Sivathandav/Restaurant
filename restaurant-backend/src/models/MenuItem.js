@@ -17,17 +17,14 @@ const menuItemSchema = new mongoose.Schema({
     min: 0,
   },
   averagePreparationTime: {
-    type: Number, // in minutes
+    type: Number,
     required: [true, 'Preparation time is required'],
     min: 1,
   },
   category: {
     type: String,
     required: [true, 'Category is required'],
-    enum: [
-      'Burger', 'Pizza', 'Drink', 'French fries', 'Veggies',
-      'Pasta', 'Desserts', 'Seafood', 'Salads', 'Soups'
-    ],
+    enum: ['Soups', 'Seafood', 'Burger', 'Pizza', 'Pasta', 'Salads', 'Sandwich', 'Desserts', 'Beverages', 'Appetizer'],
   },
   inStock: {
     type: Boolean,
@@ -47,7 +44,6 @@ const menuItemSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-// Index for efficient category filtering and search
 menuItemSchema.index({ category: 1, name: 1 });
 menuItemSchema.index({ name: 'text', description: 'text' });
 

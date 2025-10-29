@@ -82,18 +82,14 @@ const CheckoutPage = () => {
         taxes: taxes || 0,
       };
 
-      console.log('Placing order with data:', orderData);
-      
       // Try to create order, but proceed to thank you page regardless
       try {
-        const response = await createOrder(orderData);
-        console.log('Order created successfully:', response);
+        await createOrder(orderData);
       } catch (orderError) {
         console.warn('Order creation failed, but proceeding to thank you page:', orderError);
       }
       
       clearCart();
-      console.log('Navigating to thank you page...');
       
       // Force navigation to thank you page
       window.location.href = '/thank-you';

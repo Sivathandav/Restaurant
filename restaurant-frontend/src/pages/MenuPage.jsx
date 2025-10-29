@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from '../components/Dashboard/Header';
 import MenuItemCard from '../components/Menu/MenuItemCard';
 import { getAllMenuItems, toggleMenuItemStock } from '../services/api';
 import '../styles/Menu.css';
 
 const MenuPage = () => {
-  console.log('MenuPage rendered');
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
   const [page, setPage] = useState(1);
 
-  const categories = ['all', 'Burger', 'Pizza', 'Drink', 'French Fries', 'Veggies'];
+  const categories = ['all', 'Burger', 'Pizza', 'Pasta', 'Salads', 'Sandwich', 'Desserts'];
 
-  useEffect(() => {
-    fetchMenuItems();
-  }, [category, page]);
-
-  const fetchMenuItems = async () => {
+  const fetchMenuItems = useCallback(async () => {
     try {
       const response = await getAllMenuItems(page, 20, category === 'all' ? '' : category, '');
       setMenuItems(response.data.data);
@@ -27,7 +22,11 @@ const MenuPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [category, page]);
+
+  useEffect(() => {
+    fetchMenuItems();
+  }, [fetchMenuItems]);
 
   const handleToggleStock = async (id) => {
     try {

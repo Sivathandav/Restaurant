@@ -35,8 +35,6 @@ const Sidebar = () => {
   ];
 
   const handleNavigation = (path) => {
-    console.log('Navigating to:', path);
-    console.log('Current location:', location.pathname);
     
     // Try direct window navigation as fallback
     if (path !== location.pathname) {
