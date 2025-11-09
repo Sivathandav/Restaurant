@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Utensils, MapPin, ShoppingBag, Clock } from 'lucide-react';
+import { Utensils, MapPin, ShoppingBag, Clock, CheckCircle } from 'lucide-react';
 import { updateOrderStatus } from '../../services/api';
 
 const OrderCard = ({ order, onStatusChange, isBlurred = false }) => {
@@ -30,47 +30,62 @@ const OrderCard = ({ order, onStatusChange, isBlurred = false }) => {
     }
   };
 
-  const getCardTheme = (status) => {
+  const getCardTheme = (status, orderType) => {
+    const isTakeaway = orderType === 'takeAway' || orderType === 'takeaway';
+    
+    // For takeaway orders that are done, use takeaway theme
+    if (isTakeaway && (status === 'done' || status === 'notPickedUp' || status === 'served')) {
+      return {
+        bgColor: '#C2D4D9',
+        borderColor: '#C2D4D9',
+        statusBg: '#C2D4D9',
+        statusText: 'Not Picked up',
+        buttonBg: '#9BAEB3',
+        buttonText: 'Order Done',
+        icon: '✅'
+      };
+    }
+
     switch (status) {
       case 'processing':
         return {
-          bgColor: '#FEF3C7', // Light amber
-          borderColor: '#F59E0B', // Amber
-          statusBg: '#F59E0B',
+          bgColor: '#FFE3BC',
+          borderColor: '#FFE3BC',
+          statusBg: '#FFE3BC',
           statusText: 'Ongoing',
-          buttonBg: '#F59E0B',
+          buttonBg: '#FDC474',
           buttonText: 'Processing',
-          icon: '⏱️'
+          icon: '⏳'
         };
       case 'done':
         return {
-          bgColor: '#D1FAE5', // Light green
-          borderColor: '#10B981', // Green
-          statusBg: '#10B981',
+          bgColor: '#B9F8C9',
+          borderColor: '#B9F8C9',
+          statusBg: '#B9F8C9',
           statusText: 'Done',
-          buttonBg: '#10B981',
+          buttonBg: '#31FF65',
           buttonText: 'Order Done',
           icon: '✅'
         };
       case 'served':
         return {
-          bgColor: '#D1FAE5', // Light green
-          borderColor: '#10B981', // Green
-          statusBg: '#10B981',
+          bgColor: '#B9F8C9',
+          borderColor: '#B9F8C9',
+          statusBg: '#B9F8C9',
           statusText: 'Served',
-          buttonBg: '#10B981',
+          buttonBg: '#31FF65',
           buttonText: 'Order Done',
           icon: '✅'
         };
       case 'notPickedUp':
         return {
-          bgColor: '#E5E7EB', // Light gray
-          borderColor: '#6B7280', // Gray
-          statusBg: '#6B7280',
+          bgColor: '#C2D4D9',
+          borderColor: '#C2D4D9',
+          statusBg: '#C2D4D9',
           statusText: 'Not Picked up',
-          buttonBg: '#6B7280',
+          buttonBg: '#9BAEB3',
           buttonText: 'Order Done',
-          icon: '⏰'
+          icon: '✅'
         };
       default:
         return {
@@ -85,88 +100,170 @@ const OrderCard = ({ order, onStatusChange, isBlurred = false }) => {
     }
   };
 
-  const theme = getCardTheme(order.status);
+  const theme = getCardTheme(order.status, order.orderType);
   const createdAtStr = new Date(order.createdAt).toLocaleTimeString('en-US', { 
     hour: 'numeric', 
     minute: '2-digit', 
     hour12: true 
   });
 
+  const isProcessing = order.status === 'processing';
+  const isDone = order.status === 'done' || order.status === 'served';
+  const isNotPickedUp = order.status === 'notPickedUp';
+  const isTakeaway = order.orderType === 'takeAway' || order.orderType === 'takeaway';
+  const isTakeawayDone = isTakeaway && (isDone || isNotPickedUp);
+  const isDineInDone = !isTakeaway && isDone;
+  const useNewLayout = isProcessing || isDone || isNotPickedUp;
+
   return (
     <div 
-      className={`new-order-card ${isBlurred ? 'blurred' : ''}`} 
+      className={`new-order-card ${isBlurred ? 'blurred' : ''} ${useNewLayout ? 'processing-card' : ''} ${isDineInDone ? 'done-card' : ''} ${isTakeawayDone ? 'takeaway-card' : ''}`} 
       style={{ 
         backgroundColor: theme.bgColor,
-        borderLeft: `4px solid ${theme.borderColor}`
+        borderLeft: useNewLayout ? 'none' : `4px solid ${theme.borderColor}`
       }}
     >
-      {/* Header */}
-      <div className="order-header">
-        <div className="order-icon">
-          <Utensils size={16} />
-        </div>
-        <div className="order-number">#{order.orderId}</div>
-        <div 
-          className="order-status-badge"
-          style={{ backgroundColor: theme.statusBg }}
-        >
-          {theme.statusText}
-        </div>
-      </div>
-
-      {/* Order Info */}
-      <div className="order-info">
-        <div className="order-location">
-          {order.orderType === 'dineIn' ? (
-            <>
-              <MapPin size={12} />
-              <span>Table-{order.tableNumber}</span>
-            </>
-          ) : (
-            <>
-              <ShoppingBag size={12} />
-              <span>Take Away</span>
-            </>
-          )}
-        </div>
-        <div className="order-time">{createdAtStr}</div>
-      </div>
-
-      <div className="order-items-count">{order.items.length} Item</div>
-
-      {/* Items List */}
-      <div className="order-items-list">
-        {order.items.map((item, idx) => (
-          <div key={idx} className="order-item">
-            <span className="item-quantity">{item.quantity} x</span>
-            <span className="item-name">{item.name}</span>
+      {useNewLayout ? (
+        <>
+          {/* Top White Rectangle */}
+          <div className="processing-top-section">
+            <div className="processing-header">
+              <div className="processing-icon">
+                <Utensils size={18} color="#0EA5E9" />
+              </div>
+              <div className="processing-order-number">#{order.orderId}</div>
+              <div className={`processing-status-badge ${isDineInDone ? 'done-status-badge' : ''} ${isTakeawayDone ? 'takeaway-status-badge' : ''}`}>
+                {isProcessing ? (
+                  <>
+                    <div className="processing-dine-in">
+                      {isTakeaway ? 'Take Away' : 'Dine In'}
+                    </div>
+                    <div className="processing-ongoing">
+                      Ongoing: {remainingTime} Min
+                    </div>
+                  </>
+                ) : isTakeawayDone ? (
+                  <>
+                    <div className="takeaway-status-text">Take Away</div>
+                    <div className="takeaway-notpicked-text">{theme.statusText}</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="done-status-text">{theme.statusText}</div>
+                    <div className="done-served-text">Served</div>
+                  </>
+                )}
+              </div>
+            </div>
+            
+            <div className="processing-info-row">
+              <div className="processing-left-info">
+                <div className="processing-table">
+                  {isTakeaway ? 'Take Away' : `Table-${order.tableNumber}`}
+                </div>
+                <div className="processing-time">{createdAtStr}</div>
+                <div className="processing-items-count">{order.items.length} Item</div>
+              </div>
+            </div>
           </div>
-        ))}
-      </div>
 
-      {/* Footer */}
-      <div className="order-footer">
-        {order.status === 'processing' && (
-          <div className="cooking-time">
-            <Clock size={12} />
-            <span>Ongoing: {remainingTime} Min</span>
+          {/* Bottom White Rectangle - Items List */}
+          <div className="processing-items-section">
+            {order.items.map((item, idx) => (
+              <div key={idx} className="processing-item">
+                <span className="processing-item-quantity">{item.quantity} x</span>
+                <span className="processing-item-name">{item.name}</span>
+              </div>
+            ))}
           </div>
-        )}
-        
-        <button 
-          className="status-button"
-          style={{ backgroundColor: theme.buttonBg }}
-          onClick={() => {
-            if (order.status === 'processing') {
-              handleStatusUpdate('done');
-            } else if (order.status === 'done') {
-              handleStatusUpdate('served');
-            }
-          }}
-        >
-          {theme.buttonText} {theme.icon}
-        </button>
-      </div>
+
+          {/* Processing/Done/Takeaway Button */}
+          <div className="processing-footer">
+            <button 
+              className={`processing-button ${isDineInDone ? 'done-button' : ''} ${isTakeawayDone ? 'takeaway-button' : ''}`}
+              style={{ backgroundColor: theme.buttonBg }}
+              onClick={() => {
+                if (isProcessing) {
+                  handleStatusUpdate('done');
+                } else if (order.status === 'done' && !isTakeaway) {
+                  handleStatusUpdate('served');
+                }
+                // Takeaway orders don't change status on button click
+              }}
+            >
+              {theme.buttonText} 
+              {isTakeawayDone ? (
+                <CheckCircle size={18} fill="#3B413D" color="#C2D4D9" />
+              ) : isDineInDone ? (
+                <CheckCircle size={18} fill="#0E912F" color="#31FF65" />
+              ) : (
+                theme.icon
+              )}
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Header */}
+          <div className="order-header">
+            <div className="order-icon">
+              <Utensils size={16} />
+            </div>
+            <div className="order-number">#{order.orderId}</div>
+            <div 
+              className="order-status-badge"
+              style={{ backgroundColor: theme.statusBg }}
+            >
+              {theme.statusText}
+            </div>
+          </div>
+
+          {/* Order Info */}
+          <div className="order-info">
+            <div className="order-location">
+              {order.orderType === 'dineIn' ? (
+                <>
+                  <MapPin size={12} />
+                  <span>Table-{order.tableNumber}</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingBag size={12} />
+                  <span>Take Away</span>
+                </>
+              )}
+            </div>
+            <div className="order-time">{createdAtStr}</div>
+          </div>
+
+          <div className="order-items-count">{order.items.length} Item</div>
+
+          {/* Items List */}
+          <div className="order-items-list">
+            {order.items.map((item, idx) => (
+              <div key={idx} className="order-item">
+                <span className="item-quantity">{item.quantity} x</span>
+                <span className="item-name">{item.name}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="order-footer">
+            <button 
+              className="status-button"
+              style={{ backgroundColor: theme.buttonBg }}
+              onClick={() => {
+                if (order.status === 'done') {
+                  handleStatusUpdate('served');
+                }
+              }}
+            >
+              {theme.buttonText} {theme.icon}
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

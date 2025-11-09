@@ -1,17 +1,19 @@
 .sidebar {
   position: fixed;
-  left: 0;
+  left: 10px;
   top: 0;
   width: 80px;
   height: 100vh;
-  background: #ffffff;
-  border-right: 1px solid #e5e7eb;
+  background: #FFFFFF;
+  border-right: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 0;
+  padding: 24px 0;
   z-index: 9999;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.06);
+  border-radius:40px;
+  margin: 0;
 }
 
 .sidebar-header {
@@ -27,8 +29,8 @@
 .logo-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
+  background: #9CA3AF;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,65 +48,52 @@
 }
 
 .sidebar-item {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border: none;
-  background: transparent;
-  border-radius: 12px;
+  background: #F0F5F3;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #6b7280;
+  color: #6B7280;
   position: relative;
   outline: none;
 }
 
 .sidebar-item:hover {
-  background: #f3f4f6;
-  color: #374151;
-  transform: translateY(-1px);
+  background: #F0F5F3;
+  color: #1F2937;
 }
 
 .sidebar-item:active {
-  transform: translateY(0);
-  background: #e5e7eb;
+  transform: scale(0.95);
 }
 
 .sidebar-item.active {
-  background: #eef6ff;
-  color: #2563eb;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
-}
-
-.sidebar-item.active::after {
-  content: '';
-  position: absolute;
-  right: -1px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 24px;
-  background: #2563eb;
-  border-radius: 2px 0 0 2px;
+  background: #D9D9D9;
+  color: #1F2937;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar {
     width: 60px;
+    height: 100vh;
     padding: 16px 0;
+    border-radius: 0;
   }
   
   .sidebar-item {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
   }
   
   .logo-icon {
-    width: 32px;
-    height: 32px;
+    width: 35px;
+    height: 35px;
     font-size: 16px;
   }
 }

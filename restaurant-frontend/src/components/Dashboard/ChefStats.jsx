@@ -27,7 +27,6 @@ const ChefStats = () => {
   if (loading) {
     return (
       <div className="chef-stats-section">
-        <h3>Chef Name vs Current Orders</h3>
         <div style={{ padding: '20px', textAlign: 'center' }}>Loading chef data...</div>
       </div>
     );
@@ -35,12 +34,11 @@ const ChefStats = () => {
 
   return (
     <div className="chef-stats-section">
-      <h3>Chef Name vs Current Orders</h3>
       <table className="chef-table">
         <thead>
           <tr>
             <th>Chef Name</th>
-            <th>Current Orders</th>
+            <th>Order Taken</th>
           </tr>
         </thead>
         <tbody>
@@ -53,18 +51,8 @@ const ChefStats = () => {
           ) : (
             chefs.map((chef) => (
               <tr key={chef._id}>
-                <td>
-                  <ChefHat size={16} style={{ marginRight: '8px' }} />
-                  {chef.name}
-                </td>
-                <td>
-                  <span style={{ 
-                    fontWeight: 'bold',
-                    color: chef.currentOrderCount === 0 ? '#10b981' : chef.currentOrderCount > 2 ? '#ef4444' : '#f59e0b'
-                  }}>
-                    {chef.currentOrderCount}
-                  </span>
-                </td>
+                <td>{chef.name}</td>
+                <td>{chef.currentOrderCount}</td>
               </tr>
             ))
           )}

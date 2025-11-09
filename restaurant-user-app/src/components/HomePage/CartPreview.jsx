@@ -11,7 +11,7 @@ const CartPreview = () => {
   return (
     <div className="cart-preview-container">
       <button className="next-btn" onClick={() => navigate('/checkout')}>
-        Next ({cartCount} items)
+        Next
       </button>
     </div>
   );

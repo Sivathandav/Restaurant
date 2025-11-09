@@ -40,28 +40,29 @@ const MenuItemCard = ({ item }) => {
       </div>
       
       <div className="item-content">
-        <div className="item-info">
-          <h3 className="item-name">{item.name}</h3>
-          <p className="item-description">{item.description}</p>
-          <p className="item-price">₹{item.price}</p>
-        </div>
+        <h3 className="item-name">{item.name}</h3>
+        <p className="item-description">{item.description}</p>
         
-        <div className="item-actions">
-          {quantity === 0 ? (
-            <button className="add-btn" onClick={() => addToCart(item)}>
-              <Plus size={20} />
-            </button>
-          ) : (
-            <div className="quantity-controls">
-              <button className="qty-btn" onClick={() => removeFromCart(item._id)}>
-                <Minus size={18} />
+        <div className="item-price-actions">
+          <p className="item-price">₹{item.price}</p>
+          
+          <div className="item-actions">
+            {quantity === 0 ? (
+              <button className="add-btn" onClick={() => addToCart(item)}>
+                <Plus size={16} />
               </button>
-              <span className="quantity">{quantity}</span>
-              <button className="qty-btn" onClick={() => addToCart(item)}>
-                <Plus size={18} />
-              </button>
-            </div>
-          )}
+            ) : (
+              <div className="quantity-controls">
+                <button className="qty-btn" onClick={() => removeFromCart(item._id)}>
+                  <Minus size={14} />
+                </button>
+                <span className="quantity">{quantity}</span>
+                <button className="qty-btn" onClick={() => addToCart(item)}>
+                  <Plus size={14} />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

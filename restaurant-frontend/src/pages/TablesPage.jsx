@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import Header from '../components/Dashboard/Header';
 import TableCard from '../components/Tables/TableCard';
 import CreateTableModal from '../components/Tables/CreateTableModal';
 import { getAllTables, createTable, deleteTable } from '../services/api';
@@ -11,8 +10,8 @@ import '../styles/Tables.css';
 const TablesPage = () => {
   const [tables, setTables] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [createAtIndex, setCreateAtIndex] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchTables();
@@ -22,6 +21,7 @@ const TablesPage = () => {
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.key === '+' && tables.length < 30) {
+        setCreateAtIndex(0);
         setIsModalOpen(true);
       }
     };
@@ -51,11 +51,17 @@ const TablesPage = () => {
       await createTable(data);
       fetchTables();
       setIsModalOpen(false);
+      setCreateAtIndex(null);
       alert('Table created successfully!');
     } catch (error) {
       console.error('Error creating table:', error);
       alert('Failed to create table');
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setCreateAtIndex(null);
   };
 
   const handleDeleteTable = async (id) => {
@@ -78,62 +84,65 @@ const TablesPage = () => {
     setTables(updatedTables);
   };
 
-  const filteredTables = tables.filter(table => 
-    searchTerm === '' || 
-    table.tableNumber.toString().includes(searchTerm) ||
-    table.status.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   if (loading) return <div className="loading">Loading...</div>;
+
+  const nextTableNumber = tables.length + 1;
 
   return (
     <div className="tables-page">
-      <Header onSearch={setSearchTerm} title="Tables" />
-      
       <main className="tables-content">
-        {/* Table Counter */}
-        <div className="table-counter">
-          {tables.length}/30 Tables
-        </div>
+        <h1 className="page-title-simple">Tables</h1>
         
         <DndProvider backend={HTML5Backend}>
           <div className="tables-grid-6x5">
-            {filteredTables.map((table, index) => (
+            {tables.map((table, index) => (
               <TableCard
                 key={table._id}
                 table={table}
                 index={index}
                 onDelete={handleDeleteTable}
                 moveTable={moveTable}
-                isBlurred={searchTerm !== '' && !table.tableNumber.toString().includes(searchTerm) && !table.status.toLowerCase().includes(searchTerm.toLowerCase())}
               />
             ))}
             {/* Show empty slots for remaining spaces */}
-            {searchTerm === '' && Array.from({ length: Math.max(0, 30 - tables.length) }, (_, index) => (
-              <div 
-                key={`empty-${index}`} 
-                className={`empty-table-slot ${index === 0 && tables.length < 30 ? 'clickable' : ''}`}
-                onClick={() => index === 0 && tables.length < 30 && setIsModalOpen(true)}
-              >
-                <span className="slot-number">#{tables.length + index + 1}</span>
-                {index === 0 && tables.length < 30 && (
-                  <div className="add-icon">
-                    <Plus size={24} />
-                  </div>
-                )}
-              </div>
-            ))}
+            {Array.from({ length: Math.max(0, 30 - tables.length) }, (_, index) => {
+              const shouldShowCreateCard = isModalOpen && createAtIndex === index;
+              
+              if (shouldShowCreateCard) {
+                return (
+                  <CreateTableModal
+                    key={`create-${index}`}
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    onCreate={handleCreateTable}
+                    nextTableNumber={nextTableNumber}
+                  />
+                );
+              }
+              
+              return (
+                <div 
+                  key={`empty-${index}`} 
+                  className={`empty-table-slot ${index === 0 && tables.length < 30 ? 'clickable' : ''}`}
+                  onClick={() => {
+                    if (index === 0 && tables.length < 30) {
+                      setCreateAtIndex(index);
+                      setIsModalOpen(true);
+                    }
+                  }}
+                >
+                  <span className="slot-number">#{tables.length + index + 1}</span>
+                  {index === 0 && tables.length < 30 && (
+                    <div className="add-icon">
+                      <Plus size={24} />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </DndProvider>
       </main>
-
-
-
-      <CreateTableModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onCreate={handleCreateTable}
-      />
     </div>
   );
 };

@@ -55,6 +55,10 @@ const RevenueChart = () => {
     }
   };
 
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+  };
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -80,7 +84,24 @@ const RevenueChart = () => {
       <div className="chart-header">
         <h3>Revenue</h3>
         <div className="filter-buttons">
-          <button className={'active'}>Daily</button>
+          <button 
+            className={filter === 'daily' ? 'active' : ''} 
+            onClick={() => handleFilterChange('daily')}
+          >
+            Daily
+          </button>
+          <button 
+            className={filter === 'weekly' ? 'active' : ''} 
+            onClick={() => handleFilterChange('weekly')}
+          >
+            Weekly
+          </button>
+          <button 
+            className={filter === 'monthly' ? 'active' : ''} 
+            onClick={() => handleFilterChange('monthly')}
+          >
+            Monthly
+          </button>
         </div>
       </div>
       <div className="chart-wrapper">

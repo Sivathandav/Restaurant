@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from '../components/Dashboard/Header';
+import { Search } from 'lucide-react';
 import AnalyticsCards from '../components/Dashboard/AnalyticsCards';
 import RevenueChart from '../components/Dashboard/RevenueChart';
 import OrderSummaryPieChart from '../components/Dashboard/OrderSummaryPieChart';
@@ -12,24 +12,40 @@ const DashboardPage = () => {
 
   return (
     <div className="dashboard-page">
-      <Header onSearch={setSearchTerm} title="Analytics" />
+      <div className="filter-bar-container">
+        <div className="search-bar-top">
+          <Search size={20} />
+          <input
+            type="text"
+            placeholder="Filter..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
       
       <main className="dashboard-content">
-        <AnalyticsCards searchTerm={searchTerm} />
-        <div className="analytics-row">
-          <section className={`panel ${searchTerm && !'order summary'.includes(searchTerm.toLowerCase()) ? 'dimmed' : ''}`}>
-            <OrderSummaryPieChart />
-          </section>
-          <section className={`panel ${searchTerm && !'revenue'.includes(searchTerm.toLowerCase()) ? 'dimmed' : ''}`}>
-            <RevenueChart />
-          </section>
-          <section className={`panel ${searchTerm && !'tables'.includes(searchTerm.toLowerCase()) ? 'dimmed' : ''}`}>
-            <TablesGrid />
+        <div className="analytics-frame">
+          <h1 className="analytics-title">Analytics</h1>
+          
+          <AnalyticsCards searchTerm={searchTerm} />
+          
+          <div className="analytics-row">
+            <section className={`panel ${searchTerm && !'order summary'.includes(searchTerm.toLowerCase()) ? 'dimmed' : ''}`}>
+              <OrderSummaryPieChart />
+            </section>
+            <section className={`panel ${searchTerm && !'revenue'.includes(searchTerm.toLowerCase()) ? 'dimmed' : ''}`}>
+              <RevenueChart />
+            </section>
+            <section className={`panel ${searchTerm && !'tables'.includes(searchTerm.toLowerCase()) ? 'dimmed' : ''}`}>
+              <TablesGrid />
+            </section>
+          </div>
+          
+          <section className={`panel ${searchTerm && !'chef'.includes(searchTerm.toLowerCase()) ? 'dimmed' : ''}`}>
+            <ChefStats />
           </section>
         </div>
-        <section className={`panel ${searchTerm && !'chef'.includes(searchTerm.toLowerCase()) ? 'dimmed' : ''}`}>
-          <ChefStats />
-        </section>
       </main>
     </div>
   );

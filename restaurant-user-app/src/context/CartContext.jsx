@@ -48,6 +48,11 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  // Remove item completely from cart
+  const removeItemCompletely = (itemId) => {
+    setCart((prevCart) => prevCart.filter((cartItem) => cartItem._id !== itemId));
+  };
+
   // Update item quantity
   const updateQuantity = (itemId, quantity) => {
     if (quantity === 0) {
@@ -80,6 +85,7 @@ export const CartProvider = ({ children }) => {
         cart,
         addToCart,
         removeFromCart,
+        removeItemCompletely,
         updateQuantity,
         clearCart,
         itemTotal,

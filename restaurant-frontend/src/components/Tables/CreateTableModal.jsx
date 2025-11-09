@@ -1,66 +1,60 @@
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
-const CreateTableModal = ({ isOpen, onClose, onCreate }) => {
-  const [tableName, setTableName] = useState('');
-  const [chairCount, setChairCount] = useState(4);
+const CreateTableModal = ({ isOpen, onClose, onCreate, nextTableNumber }) => {
+  const [tableNumber, setTableNumber] = useState('');
+  const [chairCount, setChairCount] = useState('2');
+
+  useEffect(() => {
+    if (isOpen) {
+      setTableNumber(nextTableNumber?.toString() || '');
+      setChairCount('2');
+    }
+  }, [isOpen, nextTableNumber]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onCreate({ tableName, chairCount });
-    setTableName('');
-    setChairCount(4);
+    onCreate({ 
+      tableName: tableNumber, 
+      chairCount: parseInt(chairCount) 
+    });
+    onClose();
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>Create New Table</h2>
-          <button className="close-btn" onClick={onClose}>
-            <X size={24} />
-          </button>
+    <div className="create-table-card visible">
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <div className="form-label-center">Table name (optional)</div>
+          <input
+            type="text"
+            className="table-name-input-box"
+            value={tableNumber}
+            onChange={(e) => setTableNumber(e.target.value)}
+            autoFocus
+          />
+          <div className="dotted-line"></div>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Table Name (Optional)</label>
-            <input
-              type="text"
-              value={tableName}
-              onChange={(e) => setTableName(e.target.value)}
-              placeholder="e.g., Window Side"
-            />
-          </div>
+        <div className="form-group">
+          <div className="form-label-left">Chair</div>
+          <select 
+            className="chair-select"
+            value={chairCount}
+            onChange={(e) => setChairCount(e.target.value)}
+          >
+            <option value="2">2</option>
+            <option value="4">4</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+          </select>
+        </div>
 
-          <div className="form-group">
-            <label>Number of Chairs *</label>
-            <div className="chair-options">
-              {[2, 4, 6, 8].map((count) => (
-                <button
-                  key={count}
-                  type="button"
-                  className={`chair-option ${chairCount === count ? 'selected' : ''}`}
-                  onClick={() => setChairCount(count)}
-                >
-                  {count}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="modal-actions">
-            <button type="button" className="btn-secondary" onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit" className="btn-primary">
-              Create Table
-            </button>
-          </div>
-        </form>
-      </div>
+        <button type="submit" className="create-btn">
+          Create
+        </button>
+      </form>
     </div>
   );
 };

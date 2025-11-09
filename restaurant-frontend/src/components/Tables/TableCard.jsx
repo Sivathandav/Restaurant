@@ -28,29 +28,45 @@ const TableCard = ({ table, onDelete, index, moveTable, isBlurred = false }) => 
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       <div className="table-header">
-        <h4>#{table.tableNumber}</h4>
         {table.status === 'available' && (
           <button
             className="delete-btn"
             onClick={() => onDelete(table._id)}
             title="Delete Table"
           >
-            <Trash2 size={16} />
+            <Trash2 size={14} />
           </button>
         )}
       </div>
       
-      {table.tableName && (
-        <div className="table-name">{table.tableName}</div>
-      )}
-      
-      <div className="table-info">
-        <Users size={16} />
-        <span>{table.chairCount}</span>
+      <div style={{ 
+        textAlign: 'center', 
+        fontSize: '0.813rem', 
+        fontWeight: '500', 
+        color: '#000000',
+        marginBottom: '2px'
+      }}>
+        Table
       </div>
       
-      <div className={`status-badge ${table.status}`}>
-        {table.status === 'reserved' ? 'Reserved' : 'Available'}
+      <h4 style={{ 
+        fontSize: '1.5rem', 
+        fontWeight: '700', 
+        color: '#000000', 
+        margin: '0', 
+        textAlign: 'center', 
+        lineHeight: '1'
+      }}>
+        {String(table.tableNumber).padStart(2, '0')}
+      </h4>
+      
+      <div className="table-info">
+        <img 
+          src="https://www.svgrepo.com/show/313673/chair-solid.svg" 
+          alt="chair" 
+          style={{ width: '12px', height: '12px' }}
+        />
+        <span style={{ fontSize: '0.75rem' }}>{String(table.chairCount).padStart(2, '0')}</span>
       </div>
     </div>
   );

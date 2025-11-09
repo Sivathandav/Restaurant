@@ -109,7 +109,11 @@ const CheckoutPage = () => {
       <Header searchTerm="" onSearchChange={() => {}} />
       
       <div className="checkout-content">
-        <CartSummary />
+        <CartSummary 
+          cookingInstructions={cookingInstructions} 
+          setCookingInstructions={setCookingInstructions}
+          onOpenModal={() => setIsModalOpen(true)}
+        />
         
         <OrderTypeToggle />
         
@@ -119,19 +123,6 @@ const CheckoutPage = () => {
           customerData={customerData}
           setCustomerData={setCustomerData}
         />
-        
-        <button
-          className="cooking-instructions-btn"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Add cooking instructions (optional)
-        </button>
-        
-        {cookingInstructions && (
-          <p className="instructions-preview">
-            Instructions: {cookingInstructions}
-          </p>
-        )}
       </div>
       
       <div className="checkout-footer">

@@ -35,6 +35,10 @@ const OrderSummaryPieChart = () => {
     }
   };
 
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+  };
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -50,7 +54,24 @@ const OrderSummaryPieChart = () => {
       <div className="summary-header">
         <h3>Order Summary</h3>
         <div className="filter-buttons">
-          <button className={'active'}>Daily</button>
+          <button 
+            className={filter === 'daily' ? 'active' : ''} 
+            onClick={() => handleFilterChange('daily')}
+          >
+            Daily
+          </button>
+          <button 
+            className={filter === 'weekly' ? 'active' : ''} 
+            onClick={() => handleFilterChange('weekly')}
+          >
+            Weekly
+          </button>
+          <button 
+            className={filter === 'monthly' ? 'active' : ''} 
+            onClick={() => handleFilterChange('monthly')}
+          >
+            Monthly
+          </button>
         </div>
       </div>
 

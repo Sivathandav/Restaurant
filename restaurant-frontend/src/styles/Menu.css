@@ -1,12 +1,77 @@
 .menu-page {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #F0F5F3;
+  position: relative;
+}
+
+/* Filter Bar Container - Outside frame, right next to sidebar */
+.menu-filter-bar-container {
+  position: absolute;
+  top: 24px;
+  left: 100px;
+  z-index: 10;
+}
+
+.menu-search-bar-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #FFFFFF;
+  padding: 16px 20px;
+  border-radius: 32px;
+  width: 438px;
+  height: 65px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.menu-search-bar-top svg {
+  color: #9CA3AF;
+  flex-shrink: 0;
+}
+
+.menu-search-bar-top input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 0.875rem;
+  width: 100%;
+  color: #6B7280;
+}
+
+.menu-search-bar-top input::placeholder {
+  color: #9CA3AF;
 }
 
 .menu-content {
   padding: 24px;
-  max-width: 1400px;
+  padding-top: 110px;
+  max-width: 100%;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.menu-frame {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 1400px;
+  min-height: calc(100vh - 140px);
+}
+
+.menu-frame-header {
+  margin-bottom: 24px;
+}
+
+.menu-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0;
 }
 
 .search-bar-menu {
@@ -218,13 +283,49 @@
 }
 
 /* Responsive */
+@media (max-width: 1200px) {
+  .menu-filter-bar-container {
+    left: 85px;
+  }
+  
+  .menu-search-bar-top {
+    width: 350px;
+  }
+  
+  .menu-content {
+    padding: 16px;
+    padding-top: 110px;
+  }
+  
+  .menu-frame {
+    padding: 24px;
+  }
+}
+
 @media (max-width: 768px) {
   .menu-grid {
     grid-template-columns: 1fr;
   }
 
-  .search-bar-menu {
-    min-width: 100%;
+  .menu-filter-bar-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-bottom: 16px;
+    padding: 0 12px;
+  }
+
+  .menu-search-bar-top {
+    width: 100%;
+  }
+  
+  .menu-content {
+    padding: 12px;
+    padding-top: 12px;
+  }
+  
+  .menu-frame {
+    padding: 20px;
   }
 }/* Bl
 ur effect for search filtering */
